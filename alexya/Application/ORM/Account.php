@@ -39,10 +39,10 @@ class Account extends ORM
             "name"      => "Clan",
             "condition" => "\\Aplication\\ORM\\Account::canSetClan"
         ],
-        "maps" => [
+        /*"maps" => [
             "name" => "Map",
             "localKey" => "id"
-        ],
+        ],*/
         "levels" => [
             "name" => "Level"
         ]
@@ -78,6 +78,7 @@ class Account extends ORM
         ], "accounts_messages");
 
         $this->_data["Messaging"] = new Messaging($inbox, $outbox);
+        $this->_data["Map"]       = ORM::find(1, -1, "maps");
     }
 
     /**

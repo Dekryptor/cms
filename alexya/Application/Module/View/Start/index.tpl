@@ -126,27 +126,20 @@
                         {foreach from=\Application\ORM\Account::latest(9, "rank_points") item=account name="user_rank"}
                         <tr>
                             <td>{$account->name}</td>
-                            <td style="color: {$user->Faction->color}"><span class="fa fa-circle"></span>{strtoupper($account->Faction->abbreviation)}</td>
+                            <td style="color: {$account->Faction->color}"><span class="fa fa-circle"></span>{strtoupper($account->Faction->abbreviation)}</td>
                             <td>{$smarty.foreach.user_rank.iteration}</td>
                             <td>{$account->rank_points}</td>
                         </tr>
                         {/foreach}
-                    </tbody>
-                </table>
-                <table class="table">
-                    <thead>
                         <tr>
-                            <th>{t("Your ranking")}</th>
+                            <td colspan="4" style="text-align: center;"><b>{t("Your ranking")}</b></td>
                         </tr>
-                    </thead>
-                    <tbody>
                         <tr>
                             <td>{$user->name}</td>
-                            <td style="color: {$user->Faction->color}"><span class="fa fa-circle"></span>{$user->Faction->abbreviation}</td>
+                            <td style="color: {$user->Faction->color}"><span class="fa fa-circle"></span>{strtoupper($user->Faction->abbreviation)}</td>
                             <td>{$user->rank_position}</td>
                             <td>{$user->rank_points}</td>
                         </tr>
-                    </tbody>
                 </table>
             </div>
         </div>
@@ -179,25 +172,19 @@
                             <td>{$clan->rank_points}</td>
                         </tr>
                         {/foreach}
-                    </tbody>
-                </table>
-                {if $user->clans_id != 0}
-                <table class="table">
-                    <thead>
+                        {if $user->clans_id != 0}
                         <tr>
-                            <th>{t("Your clan ranking")}</th>
+                            <td colspan="4" style="text-align: center;"><b>{t("Your clan ranking")}</b></td>
                         </tr>
-                    </thead>
-                    <tbody>
                         <tr>
                             <td>{$user->Clan->name}</td>
                             <td>{$user->Clan->tag}</td>
                             <td>{$user->Clan->rank_position}</td>
                             <td>{$user->Clan->rank_points}</td>
                         </tr>
+                        {/if}
                     </tbody>
                 </table>
-                {/if}
             </div>
         </div>
     </div>

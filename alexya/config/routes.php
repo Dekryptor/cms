@@ -143,5 +143,13 @@ return [
         ) {
             \Alexya\Http\Response::redirect("/Internal/CompanyChoose");
         }
+    },
+
+    /**
+     * Delete session and redirect to /External/Login
+     */
+    "/Internal/Logout" => function() {
+        session_destroy();
+        \Alexya\Http\Response::redirect("/External/Login");
     }
 ];

@@ -1,7 +1,7 @@
 BlackEye CMS
 ============
 The best DarkOrbit private server.
-Current version: 1.0.
+Current version: 1.0.1
 
 CMS Structure
 -------------

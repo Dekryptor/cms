@@ -4,6 +4,7 @@ namespace Application\Module\Controller;
 use \Alexya\Container;
 use \Alexya\Database\ORM\Model;
 use \Alexya\Foundation\Controller;
+use \Alexya\Http\Response;
 use \Alexya\Tools\Session\Results;
 
 /**
@@ -46,7 +47,7 @@ class CompanyChoose extends Controller
         }
 
         $faction = Model::find($id, -1, "factions");
-        if($faction->id == "") {
+        if(empty($faction)) {
             Results::flash("faction_id_does_not_exist", [
                 "result"  => "warning",
                 "message" => "Faction ID does not exist!"
