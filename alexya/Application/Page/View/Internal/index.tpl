@@ -22,6 +22,7 @@
     <script type='text/javascript' src='{$URL}js/plugins/flot/jquery.flot.resize.js'></script>
 
     <script type='text/javascript' src='{$URL}js/plugins.js'></script>
+    <script type='text/javascript' src='{$URL}js/actions.js'></script>
 
     <style type="text/css">
         .jqstooltip {
@@ -86,6 +87,22 @@
             width: 18px;
             background-color: rgb(248, 172, 89);
             color: rgb(255, 255, 255);
+        }
+        .item p {
+            margin-top: -18px;
+            height: 18px;
+            text-align: center;
+            width: 100px;
+            font-weight: bold;
+        }
+        #buy {
+            width: 100%;
+            margin-top: 10px;
+            height: 50px;
+            padding-top: 12.5px;
+        }
+        .page-navigation li ul li a {
+            padding-left: 50px;
         }
     </style>
 </head>
@@ -260,7 +277,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{$URL}Internal/Map">
+                    <a href="{$URL}Map">
                         {t("Spacemap")}
                         <span class="fa fa-play fa-lg fa-pull-right" style="float: right;"></span>
                     </a>
@@ -269,7 +286,7 @@
         </div>
         <div class="page-content">
             <div class="container">
-                {$module->Controller->render()}
+                {$module}
             </div>
         </div>
     </div>

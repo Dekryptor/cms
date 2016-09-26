@@ -86,10 +86,72 @@ return [
 
         if(
             $uri[1] != "External" &&
-            $uri[1] != "Internal"
+            $uri[1] != "Internal" &&
+            $uri[1] != "Map"      &&
+            $uri[1] != "API"
         ) {
             \Alexya\Http\Response::redirect("/External/Login");
         }
+    },
+
+    /**
+     * API requests.
+     *
+     * Copy paste from '{DEFAULT}' request but instancing `\Application\API`
+     * objects instead of `\Alexya\Foundation\Page` objects.
+     *
+     * Also, the actions of the API might return an array, in that case
+     * it will be encoded as a JSON.
+     */
+    "/API(/?)(.*)" => function() {
+        $request = \Alexya\Http\Request::main();
+        $uri     = $request->uri();
+
+        $page    = $uri[2];
+        $action  = ($_POST["action"] ?? ($uri[3] ?? "index"));
+        $params  = array_slice($uri, 4);
+
+        $triad = new \Application\API($page, $request);
+
+        if($triad->Controller == null) {
+            // The requested action isn't available
+            die('{"result":"error","error":"No action available!"}');
+        }
+
+        if(
+            !is_callable([$triad->Controller, $action]) ||
+            empty($page)
+        ) {
+            // The requested action isn't available, use `index` as action
+            $action = "index";
+        }
+
+        if(!empty($_POST)) {
+            unset($_POST["action"]);
+            $params = $_POST;
+        }
+
+        $response = $triad->Controller->$action(... array_values($params));
+
+        if(!$response instanceof \Alexya\Http\Response) {
+            $json = $response;
+
+            // Encode the response if it's not already encoded
+            $temp = @json_decode($json);
+            if(
+                json_last_error() != JSON_ERROR_NONE ||
+                $temp == null
+            ) {
+                $json = json_encode($json);
+            }
+
+            $response = new \Alexya\Http\Response([
+                "Content-Type" => "text/json"
+            ], $json);
+        }
+
+        $response->send();
+        die();
     },
 
     /**
@@ -131,7 +193,7 @@ return [
      *
      * This way the default route is also executed even so it can render the page.
      */
-    "/Internal(/?)(.*)" => function() {
+    "/(Internal|Map)(/?)(.*)" => function() {
         // Check that account is logged
         if(!\Alexya\Container::Account()->isLogged()) {
             \Alexya\Http\Response::redirect("/External/Login");

@@ -59,10 +59,9 @@ class CompanyChoose extends Controller
         $account->factions_id = $faction->id;
         $account->save();
 
-        $ship = Model::find([
-            "accounts_equipment_hangars_id" => $account->accounts_equipment_hangars_id
-        ], -1, "accounts_equipment_ships");
-
+        $hangar = Model::find($account->accounts_equipment_hangars_id, -1, "accounts_equipment_hangars");
+        $ship   = Model::find($hangar->accounts_equipment_ships_id, -1, "accounts_equipment_ships");
+        
         $ship->position = $faction->home_position;
         $ship->maps_id  = $faction->home_maps_id;
         $ship->save();

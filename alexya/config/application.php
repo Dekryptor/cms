@@ -32,6 +32,7 @@ return [
      * Global view variables.
      */
     "view_vars" => [
+        "ip"  => "127.0.0.1",
         "URL" => "http://localhost/"
     ],
 
@@ -139,11 +140,50 @@ return [
         /**
          * Configurations to add.
          *
-         * @param array $items      Array with items id.
-         * @param int   $account_id Account's id.
+         * @param array $items   Array with items id.
+         * @param int   $ship_id Account's ship id.
          */
-        "configurations" => function($items, $account_id) {
-            // Do nothing yet.
+        "configurations" => function($items, $ship_id) {
+            $lasers     = [];
+            $hellstorms = [];
+            $generators = [];
+            $extras     = [];
+
+            foreach($items as $item_id) {
+                $item = \Application\ORM\Accounts\Equipment\Item::find($item);
+
+                if($item->Item->category == "laser") {
+                    $lasers[] = $item_id;
+                } else if($item->Item->category == "hellstorms") {
+                    $hellstorms[] = $item_id;
+                } else if($item->Item->category == "generators") {
+                    $generators[] = $item_id;
+                } else if($item->Item->category == "extras") {
+                    $extras[] = $item_id;
+                }
+            }
+
+            $config = \Alexya\Database\ORM\Model::create("accounts_equipment_configurations");
+
+            $config->accounts_equipment_ships_id = $ship_id;
+            $config->configuration               = 1;
+            $config->lasers                      = json_encode($lasers);
+            $config->hellstorms                 = json_encode($hellstorms);
+            $config->generators                 = json_encode($generators);
+            $config->extras                     = json_encode($extras);
+
+            $config->save();
+
+            $config = \Alexya\Database\ORM\Model::create("accounts_equipment_configurations");
+
+            $config->accounts_equipment_ships_id = $ship_id;
+            $config->configuration               = 2;
+            $config->lasers                      = json_encode($lasers);
+            $config->hellstorms                 = json_encode($hellstorms);
+            $config->generators                 = json_encode($generators);
+            $config->extras                     = json_encode($extras);
+
+            $config->save();
         },
 
         /**

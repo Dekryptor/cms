@@ -397,7 +397,6 @@ class External extends Controller
         $query->insert("accounts_equipment_ships")
               ->values([
                   "accounts_id"                   => $insert_accounts,
-                  "accounts_equipment_hangars_id" => $insert_accounts_equipment_hangars,
                   "ships_id"                      => $Settings->get("application.register.ship.id"),
                   "ships_designs_id"              => $Settings->get("application.register.ship.designs_id"),
                   "gfx"                           => $Settings->get("application.register.ship.gfx"),
@@ -428,6 +427,19 @@ class External extends Controller
                     "id" => $insert_accounts
                 ]);
         $update_accounts = $Database->execute($query);
+
+        $query->clear();
+
+        //Update `accounts_equipment_hangars` row and set ship's ID
+        $query->update("accounts_equipment_hangars")
+              ->set([
+                  "accounts_equipment_ships_id" => $insert_accounts_equipment_ships
+              ])
+              ->where([
+                  "id" => $insert_accounts_equipment_hangars
+              ]);
+
+        $update_aaccounts_equipment_hangars = $Database->execute($query);
 
         $query->clear();
 
